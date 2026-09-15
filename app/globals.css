@@ -1,28 +1,25 @@
 @import "tailwindcss";
 
 /* ============================================================
-   DESIGN TOKENS — Tailwind v4 · Thème CLAIR & SÉRIEUX
+   DESIGN TOKENS — Tailwind v4 · Light Minimalist (FuturDigital)
    ============================================================ */
 @theme {
-  /* ---------- Fonds clairs (jamais blanc pur) ---------- */
-  --color-canvas: #FAFAF7;        /* fond principal off-white */
-  --color-surface: #FFFFFF;        /* cartes */
-  --color-surface-soft: #F4F4EF;   /* sections alternées */
+  /* ---------- Surfaces ---------- */
+  --color-canvas: #F8FAFC;        /* fond principal — gris perle */
+  --color-surface: #FFFFFF;       /* cartes, navbar, footer */
+  --color-surface-soft: #F1F5F9;  /* sections alternées, hovers */
+  --color-border-soft: #E2E8F0;   /* bordures fines */
 
   /* ---------- Encres / texte ---------- */
-  --color-ink-900: #0F172A;        /* titres */
-  --color-ink-700: #334155;        /* texte courant */
-  --color-ink-500: #64748B;        /* texte secondaire */
-  --color-ink-300: #CBD5E1;        /* borders / muted */
+  --color-ink-900: #0F172A;       /* titres, texte principal */
+  --color-ink-700: #334155;       /* texte courant */
+  --color-ink-500: #64748B;       /* texte secondaire */
+  --color-ink-300: #CBD5E1;       /* muted */
 
-  /* ---------- Or sobre (accent, pas criard) ---------- */
-  --color-gold-50:  #FBF7E9;
-  --color-gold-100: #F4E9B8;
-  --color-gold-300: #C9A961;       /* or adouci pour fond clair */
-  --color-gold-400: #B8935A;
-  --color-gold-500: #9A7A3F;
-  --color-gold-600: #7A5F2F;
-  --color-gold-700: #5C4722;
+  /* ---------- Or dégradé (CTA) ---------- */
+  --color-gold-light: #D4AF37;
+  --color-gold-mid:   #B8860B;
+  --color-gold-dark:  #996515;
 
   /* ---------- Typographie ---------- */
   --font-sans: var(--font-inter), system-ui, sans-serif;
@@ -31,6 +28,8 @@
   --shadow-soft: 0 1px 2px rgba(15, 23, 42, 0.04), 0 4px 16px rgba(15, 23, 42, 0.04);
   --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.06), 0 8px 24px rgba(15, 23, 42, 0.06);
   --shadow-elevated: 0 4px 12px rgba(15, 23, 42, 0.08), 0 16px 40px rgba(15, 23, 42, 0.08);
+  --shadow-gold: 0 4px 14px rgba(184, 134, 11, 0.20);
+  --shadow-gold-hover: 0 6px 24px rgba(184, 134, 11, 0.40);
 }
 
 /* ============================================================
@@ -43,24 +42,24 @@
 
   body {
     background-color: var(--color-canvas);
-    color: var(--color-ink-700);
+    color: var(--color-ink-900);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     min-height: 100vh;
   }
 
   ::selection {
-    background-color: color-mix(in oklab, var(--color-gold-300) 40%, transparent);
+    background-color: color-mix(in oklab, var(--color-gold-light) 35%, transparent);
     color: var(--color-ink-900);
   }
 
   ::-webkit-scrollbar { width: 8px; }
-  ::-webkit-scrollbar-track { background: var(--color-surface-soft); }
+  ::-webkit-scrollbar-track { background: var(--color-canvas); }
   ::-webkit-scrollbar-thumb {
     background: var(--color-ink-300);
     border-radius: 4px;
   }
-  ::-webkit-scrollbar-thumb:hover { background: var(--color-gold-400); }
+  ::-webkit-scrollbar-thumb:hover { background: var(--color-gold-mid); }
 }
 
 /* ============================================================
@@ -68,17 +67,30 @@
    ============================================================ */
 @layer utilities {
   .text-accent {
-    color: var(--color-gold-500);
+    color: var(--color-gold-mid);
   }
 
   .card-soft {
     background-color: var(--color-surface);
-    border: 1px solid var(--color-ink-300);
+    border: 1px solid var(--color-border-soft);
     box-shadow: var(--shadow-soft);
   }
 
-  /* Séparateur fin type Linear */
-  .divider-soft {
-    border-color: color-mix(in oklab, var(--color-ink-300) 60%, transparent);
+  .btn-gold {
+    background-image: linear-gradient(
+      to right,
+      #B8860B,
+      #D4AF37,
+      #996515
+    );
+    color: #020617; /* slate-950 */
+    font-weight: 600;
+    box-shadow: 0 4px 14px rgba(184, 134, 11, 0.20);
+    transition: all 300ms ease;
+  }
+
+  .btn-gold:hover {
+    box-shadow: 0 6px 24px rgba(184, 134, 11, 0.40);
+    transform: scale(1.02);
   }
 }

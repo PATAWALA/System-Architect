@@ -28,7 +28,7 @@ export function Navbar() {
       className={cn(
         "sticky top-0 z-50 w-full transition-all duration-300",
         scrolled
-          ? "bg-canvas/80 backdrop-blur-md border-b border-ink-300/60"
+          ? "bg-white/80 backdrop-blur-md border-b border-[#E2E8F0]"
           : "bg-transparent border-b border-transparent"
       )}
     >
@@ -36,13 +36,13 @@ export function Navbar() {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="relative w-8 h-8 rounded-md bg-ink-900 flex items-center justify-center overflow-hidden">
-              <span className="absolute inset-0 bg-gradient-to-br from-gold-300/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-              <span className="relative text-gold-300 font-bold text-sm tracking-tight">
+            <div className="relative w-8 h-8 rounded-md bg-[#0F172A] flex items-center justify-center overflow-hidden">
+              <span className="absolute inset-0 bg-gradient-to-br from-[#D4AF37]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              <span className="relative text-[#D4AF37] font-bold text-sm tracking-tight">
                 SA
               </span>
             </div>
-            <span className="text-[15px] font-semibold tracking-tight text-ink-900">
+            <span className="text-[15px] font-semibold tracking-tight text-[#0F172A]">
               System Architect
             </span>
           </Link>
@@ -60,10 +60,10 @@ export function Navbar() {
             ))}
           </nav>
 
-          {/* CTA desktop */}
+          {/* CTA desktop — reprend le gold exact */}
           <div className="hidden md:flex items-center gap-3">
             <Button size="md" variant="primary">
-              Demander un accompagnement
+              Demander mon diagnostic gratuit
               <ArrowRight className="w-3.5 h-3.5" />
             </Button>
           </div>
@@ -81,7 +81,7 @@ export function Navbar() {
 
       {/* Menu mobile */}
       {open && (
-        <div className="md:hidden border-t border-ink-300/60 bg-canvas">
+        <div className="md:hidden border-t border-[#E2E8F0] bg-white">
           <div className="px-6 py-6 space-y-4">
             {links.map((l) => (
               <Link
@@ -94,7 +94,7 @@ export function Navbar() {
               </Link>
             ))}
             <Button size="md" variant="primary" className="w-full mt-2">
-              Demander un accompagnement
+              Demander mon diagnostic gratuit
               <ArrowRight className="w-3.5 h-3.5" />
             </Button>
           </div>

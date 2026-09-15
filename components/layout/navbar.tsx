@@ -35,7 +35,7 @@ export function Navbar() {
             className="flex items-center transition-opacity hover:opacity-80"
           >
             <Image
-              src="/images/patawala_logo_v2.png"
+              src="/patawala_logo_v2.png"
               alt="Patawala"
               width={180}
               height={48}

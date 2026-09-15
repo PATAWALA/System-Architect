@@ -1,26 +1,95 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ============================================================
+   DESIGN TOKENS — Tailwind v4 (CSS-first config)
+   ============================================================ */
+@theme {
+  /* ---------- Couleurs de fond (jamais noir pur) ---------- */
+  --color-slate-deep: #0B0F17;
+  --color-slate-base: #111827;
+
+  /* ---------- Palette Or / Amber luxueux ---------- */
+  --color-gold-50:  #FBF7E9;
+  --color-gold-100: #F4E9B8;
+  --color-gold-300: #E6CE6E;
+  --color-gold-400: #D4AF37; /* primaire */
+  --color-gold-500: #B8860B;
+  --color-gold-600: #996515;
+  --color-gold-700: #7A4F0F;
+
+  /* ---------- Typographie ---------- */
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+
+  /* ---------- Backgrounds (gradients réutilisables) ---------- */
+  --background-image-gold-gradient:
+    linear-gradient(135deg, #D4AF37 0%, #B8860B 50%, #996515 100%);
+  --background-image-gold-radial:
+    radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.15), transparent 70%);
+
+  /* ---------- Ombres / Glow ---------- */
+  --shadow-gold-glow: 0 0 25px rgba(212, 175, 55, 0.3);
+  --shadow-gold-glow-lg: 0 0 45px rgba(212, 175, 55, 0.45);
+
+  /* ---------- Animations ---------- */
+  --animate-pulse-slow: pulse 3s ease-in-out infinite;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ============================================================
+   BASE
+   ============================================================ */
+@layer base {
+  html {
+    scroll-behavior: smooth;
   }
+
+  body {
+    background-color: var(--color-slate-deep);
+    color: theme(--color-slate-200);
+    -webkit-font-smoothing: antialiased;
+    font-family: var(--font-sans);
+
+    /* Halos dorés d'arrière-plan */
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(212, 175, 55, 0.10), transparent),
+      radial-gradient(ellipse 60% 40% at 80% 100%, rgba(184, 134, 11, 0.06), transparent);
+    background-attachment: fixed;
+    min-height: 100vh;
+  }
+
+  ::selection {
+    background-color: color-mix(in oklab, var(--color-gold-400) 30%, transparent);
+    color: white;
+  }
+
+  /* Scrollbar discrète */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--color-slate-deep); }
+  ::-webkit-scrollbar-thumb {
+    background: #1e293b;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: var(--color-gold-500); }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ============================================================
+   UTILITAIRES personnalisés
+   ============================================================ */
+@layer utilities {
+  .text-gradient-gold {
+    background-image: var(--background-image-gold-gradient);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  .card-glass {
+    background-color: color-mix(in oklab, var(--color-slate-900) 60%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--color-slate-800);
+  }
+
+  .border-glass {
+    border: 1px solid color-mix(in oklab, var(--color-slate-800) 80%, transparent);
+  }
 }

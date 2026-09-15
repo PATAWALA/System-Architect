@@ -2,13 +2,21 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ArrowRight, Calendar } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Typewriter } from "@/components/ui/typewriter";
 
-const metrics = [
-  { value: "4 h", label: "d'audit de vos processus" },
-  { value: "5 jours", label: "pour un prototype cliquable" },
-  { value: "1", label: "livrable fonctionnel par semaine" },
+const ROTATING_WORDS = [
+  "Portail Client",
+  "Système de Réservation",
+  "Fichier Client Centralisé",
+  "Catalogue Intelligent",
+];
+
+const METRICS = [
+  { value: "4 h", label: "Audit de vos processus" },
+  { value: "5 jours", label: "Prototype cliquable" },
+  { value: "1 / sem.", label: "Livrable fonctionnel" },
 ];
 
 export function HeroSection() {
@@ -18,67 +26,88 @@ export function HeroSection() {
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           {/* ---------- Colonne texte ---------- */}
           <div className="lg:col-span-7">
-            {/* Badge */}
+            {/* 1. Badge */}
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface border border-ink-300/60 text-xs tracking-wide text-ink-500"
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface border border-ink-300/60 text-[11px] font-medium tracking-[0.08em] uppercase text-ink-500"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-gold-400" />
-              Architecture web sur-mesure
+              Architecture web &amp; automatisation sur-mesure
             </motion.div>
 
-            {/* H1 */}
+            {/* 2. H1 avec machine à écrire */}
             <motion.h1
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               className="mt-6 text-4xl sm:text-5xl lg:text-[56px] font-semibold tracking-tight text-ink-900 leading-[1.08]"
             >
-              Du chaos opérationnel
+              Votre futur{" "}
+              <span className="text-accent inline-flex items-baseline">
+                <Typewriter
+                  words={ROTATING_WORDS}
+                  typingSpeed={55}
+                  deletingSpeed={30}
+                  pauseDuration={2000}
+                />
+              </span>{" "}
+              sur-mesure.
               <br />
-              à une plateforme{" "}
-              <span className="text-accent">sur-mesure.</span>
+              <span className="text-ink-500">
+                Livré dans quelques semaines.
+              </span>
             </motion.h1>
 
-            {/* Sous-titre */}
+            {/* 3. Sous-titre */}
             <motion.p
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               className="mt-6 text-lg text-ink-500 leading-relaxed max-w-xl"
             >
-              J'élimine votre gestion manuelle sur WhatsApp et vos fichiers
-              éparpillés. Je conçois le système web autonome qui gère vos
-              réservations, vos clients et vos flux à votre place.
+              À partir de votre façon de travailler actuelle, nous
+              construisons la plateforme dédiée qui gère votre{" "}
+              <span className="text-ink-700 font-medium">acquisition</span>,
+              vos{" "}
+              <span className="text-ink-700 font-medium">réservations</span>{" "}
+              et vos{" "}
+              <span className="text-ink-700 font-medium">données clients</span>.
+              Fini le chaos sur WhatsApp et les fichiers éparpillés.
             </motion.p>
 
-            {/* CTA */}
+            {/* 4. Bouton unique */}
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="mt-9 flex flex-col sm:flex-row gap-3"
+              className="mt-9"
             >
-              <Button size="lg" variant="primary">
-                Demander un accompagnement
+              <Button
+                size="lg"
+                variant="primary"
+                onClick={() => {
+                  // À brancher : scroll vers formulaire, ouverture Calendly,
+                  // ou redirection WhatsApp Business structuré
+                  document
+                    .querySelector("#diagnostic")
+                    ?.scrollIntoView({ behavior: "smooth" });
+                }}
+              >
+                Demander mon diagnostic gratuit
                 <ArrowRight className="w-4 h-4" />
-              </Button>
-              <Button size="lg" variant="secondary">
-                <Calendar className="w-4 h-4" />
-                Réserver un appel découverte
               </Button>
             </motion.div>
 
-            {/* Métriques */}
+            {/* 5. Métriques */}
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
               className="mt-12 pt-8 border-t border-ink-300/60 grid grid-cols-3 gap-6"
             >
-              {metrics.map((m) => (
+              {METRICS.map((m) => (
                 <div key={m.label}>
                   <div className="text-2xl font-semibold tracking-tight text-ink-900">
                     {m.value}
@@ -99,10 +128,9 @@ export function HeroSection() {
             className="lg:col-span-5 flex justify-center lg:justify-end"
           >
             <div className="relative w-full max-w-md">
-              {/* Cadre sobre */}
               <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-surface-soft border border-ink-300/60 shadow-elevated">
                 <Image
-                  src="/images/portrait.jpg"
+                  src="/portrait.png"
                   alt="Portrait du fondateur — System Architect"
                   fill
                   priority
@@ -111,7 +139,7 @@ export function HeroSection() {
                 />
               </div>
 
-              {/* Petite carte flottante (discrète) */}
+              {/* Carte flottante discrète */}
               <div className="absolute -bottom-5 -left-5 bg-surface border border-ink-300/60 rounded-xl shadow-card px-4 py-3">
                 <div className="flex items-center gap-2">
                   <span className="relative flex w-2 h-2">

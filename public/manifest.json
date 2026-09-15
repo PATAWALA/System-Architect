@@ -1,0 +1,21 @@
+{
+  "name": "Patawala — Plateformes web sur-mesure",
+  "short_name": "Patawala",
+  "description": "Plateformes web autonomes sur-mesure pour entrepreneurs.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F8FAFC",
+  "theme_color": "#F8FAFC",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

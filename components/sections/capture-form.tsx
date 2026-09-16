@@ -35,23 +35,37 @@ interface FormData {
 const PROBLEM_GROUPS = [
   {
     title: "Acquisition",
-    items: ["Je perds des prospects"],
-  },
-  {
-    title: "Gestion & organisation",
     items: [
-      "Je gère tout à la main",
-      "Mes clients sont éparpillés",
-      "Je n'ai pas de suivi commercial",
-      "Mes réservations sont manuelles",
+      "Je veux attirer plus de clients",
+      "Je veux automatiser ma prospection",
     ],
   },
   {
-    title: "Image & automatisation",
+    title: "Automatisation",
     items: [
-      "Je veux automatiser mon business",
-      "Je veux renforcer mon positionnement",
-      "J'ai besoin d'un espace client",
+      "Je veux automatiser mes tâches répétitives",
+      "Je veux automatiser mes relances",
+    ],
+  },
+  {
+    title: "Gestion & centralisation",
+    items: [
+      "Je veux centraliser mes clients au même endroit",
+      "Je veux arrêter de tout gérer à la main",
+    ],
+  },
+  {
+    title: "Espace client",
+    items: [
+      "Je veux donner un espace client à mes clients",
+      "Je veux un suivi client clair",
+    ],
+  },
+  {
+    title: "Image professionnelle",
+    items: [
+      "Je veux une image professionnelle",
+      "Je veux un site qui me ressemble",
     ],
   },
   {
@@ -95,7 +109,7 @@ function Field({
   );
 }
 
-/* Inputs arrondis avec bordure fine — comme avant */
+/* Inputs arrondis avec bordure fine */
 const inputClass =
   "w-full px-4 py-3.5 sm:py-3 rounded-lg bg-white border border-[#E2E8F0] text-[#0F172A] placeholder-[#94A3B8] text-[15px] sm:text-sm transition-all outline-none focus:border-[#B8860B] focus:ring-4 focus:ring-[#B8860B]/10";
 
@@ -168,7 +182,7 @@ export function CaptureForm() {
   const confirmationMessage = `Bonjour, je viens d'envoyer ma demande de diagnostic via le site.
 
 Métier : ${data.activity}
-Problèmes : ${data.problems.join(", ")}${hasOther && data.otherProblem ? ` — ${data.otherProblem}` : ""}
+Besoins : ${data.problems.join(", ")}${hasOther && data.otherProblem ? ` — ${data.otherProblem}` : ""}
 Email : ${data.email}${data.whatsapp ? `\nWhatsApp : ${data.whatsapp}` : ""}`;
 
   return (
@@ -235,10 +249,10 @@ Email : ${data.email}${data.whatsapp ? `\nWhatsApp : ${data.whatsapp}` : ""}`;
                 />
               </Field>
 
-              {/* ---------- 02 — Problèmes ---------- */}
+              {/* ---------- 02 — Besoins ---------- */}
               <Field
                 number="2"
-                label="Vos problèmes aujourd'hui"
+                label="Ce que vous voulez améliorer"
                 hint="Cochez tout ce qui s'applique."
               >
                 <div className="space-y-5">
@@ -252,7 +266,7 @@ Email : ${data.email}${data.whatsapp ? `\nWhatsApp : ${data.whatsapp}` : ""}`;
                         <span className="flex-1 h-px bg-[#E2E8F0]" />
                       </div>
 
-                      {/* Items — cartes arrondies cliquables (comme avant) */}
+                      {/* Items — cartes arrondies cliquables */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                         {group.items.map((p) => {
                           const checked = data.problems.includes(p);
@@ -308,7 +322,7 @@ Email : ${data.email}${data.whatsapp ? `\nWhatsApp : ${data.whatsapp}` : ""}`;
                                 otherProblem: e.target.value,
                               }))
                             }
-                            placeholder="Précisez votre problème…"
+                            placeholder="Précisez…"
                             className={inputClass + " mt-2"}
                           />
                         </motion.div>

@@ -12,7 +12,7 @@ interface Payload {
 }
 
 /* ============================================================
-   📬 CONFIG — Ton email de réception
+   📬 Ton Gmail — tu reçois les diagnostics ici
    ============================================================ */
 const NOTIFY_EMAIL = "patawalaabdoulaye2003@gmail.com";
 
@@ -38,7 +38,7 @@ export async function POST(request: Request) {
     }
 
     /* ---------- Envoi par email via Resend ---------- */
-    const { error } = await resend.emails.send({
+    const { data, error } = await resend.emails.send({
       from: "Patawala <diagnostic@patawala.com>",
       to: [NOTIFY_EMAIL],
       replyTo: body.email,
@@ -47,16 +47,18 @@ export async function POST(request: Request) {
     });
 
     if (error) {
-      console.error("Resend error:", error);
+      console.error("❌ Resend error:", error);
       return NextResponse.json(
         { error: "Envoi email échoué." },
         { status: 500 }
       );
     }
 
-    return NextResponse.json({ ok: true });
+    console.log("✅ Email envoyé avec succès. ID:", data?.id);
+
+    return NextResponse.json({ ok: true, id: data?.id });
   } catch (err) {
-    console.error("Erreur:", err);
+    console.error("❌ Erreur:", err);
     return NextResponse.json(
       { error: "Requête invalide." },
       { status: 400 }

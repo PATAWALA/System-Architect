@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
+import { ArrowRight, Check, CheckCircle2, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 /* ---------- Types ---------- */
 interface FormData {
   activity: string;
-  problem: string;
+  problems: string[];
+  otherProblem: string;
   email: string;
   whatsapp: string;
 }
@@ -18,10 +19,12 @@ const PROBLEMS = [
   "Je gère tout à la main",
   "Mes clients sont éparpillés",
   "Je n'ai pas de suivi commercial",
+  "Mes réservations sont manuelles",
+  "J'ai besoin d'un espace client",
   "Autre chose",
 ];
 
-/* ---------- Champ réutilisable ---------- */
+/* ---------- Champ ---------- */
 function Field({
   label,
   children,
@@ -33,23 +36,23 @@ function Field({
 }) {
   return (
     <div>
-      <label className="block text-sm font-medium text-[#0F172A] mb-2">
+      <label className="block text-sm font-medium text-[#0F172A] mb-3">
         {label}
       </label>
       {children}
-      {hint && <p className="mt-1.5 text-xs text-[#94A3B8]">{hint}</p>}
+      {hint && <p className="mt-2 text-xs text-[#94A3B8]">{hint}</p>}
     </div>
   );
 }
 
-/* ---------- Input ---------- */
 const inputClass =
   "w-full px-4 py-3 rounded-lg bg-white border border-[#E2E8F0] text-[#0F172A] placeholder-[#94A3B8] text-sm transition-all outline-none focus:border-[#B8860B] focus:ring-4 focus:ring-[#B8860B]/10";
 
 export function CaptureForm() {
   const [data, setData] = useState<FormData>({
     activity: "",
-    problem: "",
+    problems: [],
+    otherProblem: "",
     email: "",
     whatsapp: "",
   });
@@ -57,19 +60,34 @@ export function CaptureForm() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const update = (key: keyof FormData) => (value: string) =>
-    setData((d) => ({ ...d, [key]: value }));
+  const toggleProblem = (p: string) => {
+    setData((d) => ({
+      ...d,
+      problems: d.problems.includes(p)
+        ? d.problems.filter((x) => x !== p)
+        : [...d.problems, p],
+    }));
+  };
+
+  const hasOther = data.problems.includes("Autre chose");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
-    // Validation légère
-    if (!data.activity || !data.problem || !data.email) {
-      setError("Merci de remplir tous les champs obligatoires.");
+    if (!data.activity) {
+      setError("Merci d'indiquer votre métier.");
       return;
     }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+    if (data.problems.length === 0) {
+      setError("Merci de cocher au moins un problème.");
+      return;
+    }
+    if (hasOther && !data.otherProblem.trim()) {
+      setError("Merci de préciser votre problème (champ 'Autre chose').");
+      return;
+    }
+    if (!data.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
       setError("Merci d'entrer une adresse email valide.");
       return;
     }
@@ -81,7 +99,6 @@ export function CaptureForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-
       if (!res.ok) throw new Error("Envoi échoué");
       setSuccess(true);
     } catch {
@@ -94,42 +111,40 @@ export function CaptureForm() {
   };
 
   return (
-    <section
-      id="diagnostic"
-      className="relative border-t border-[#E2E8F0] bg-white"
-    >
-      <div className="mx-auto max-w-2xl px-6 py-20 lg:py-28">
-        {/* ---------- En-tête de section ---------- */}
-        <div className="text-center mb-12">
-          <motion.h2
+    <section className="relative">
+      {/* Halo doré discret */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 top-0 h-[500px] bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(184,134,11,0.07),transparent_70%)] pointer-events-none"
+      />
+
+      <div className="relative mx-auto max-w-2xl px-6 pt-16 pb-20 lg:pt-24 lg:pb-24">
+        {/* ---------- En-tête ---------- */}
+        <div className="text-center mb-10">
+          <motion.h1
             initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-3xl sm:text-4xl font-semibold tracking-tight text-[#0F172A]"
+            className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-tight text-[#0F172A] leading-tight"
           >
-            3 étapes. 2 minutes.
-            <br />
-            <span className="text-[#B8860B]">Un diagnostic clair.</span>
-          </motion.h2>
+            Votre diagnostic gratuit.
+          </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="mt-4 text-[#64748B] leading-relaxed"
+            className="mt-4 text-base text-[#64748B] leading-relaxed max-w-md mx-auto"
           >
-            Répondez à quelques questions. Je reviens vers vous sous 24 h avec
-            une première analyse de votre situation.
+            2 minutes pour décrire votre situation. Je reviens vers vous
+            sous 24 h avec une première analyse.
           </motion.p>
         </div>
 
         {/* ---------- Carte formulaire ---------- */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
           className="relative rounded-2xl bg-white border border-[#E2E8F0] shadow-[0_1px_3px_rgba(15,23,42,0.06),0_8px_24px_rgba(15,23,42,0.06)] p-8 sm:p-10"
         >
           <AnimatePresence mode="wait">
@@ -142,39 +157,88 @@ export function CaptureForm() {
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.3 }}
                 onSubmit={handleSubmit}
-                className="space-y-6"
+                className="space-y-7"
               >
-                {/* 01 — Activité */}
-                <Field label="1. Votre activité">
+                {/* 01 — Métier */}
+                <Field label="1. Votre métier">
                   <input
                     type="text"
                     required
                     value={data.activity}
-                    onChange={(e) => update("activity")(e.target.value)}
+                    onChange={(e) =>
+                      setData((d) => ({ ...d, activity: e.target.value }))
+                    }
                     placeholder="Ex : Coach sportif, Restaurant, Consultant…"
                     className={inputClass}
                   />
                 </Field>
 
-                {/* 02 — Problème principal */}
-                <Field label="2. Votre problème n°1 aujourd'hui">
+                {/* 02 — Problèmes (multi-select) */}
+                <Field
+                  label="2. Vos problèmes aujourd'hui"
+                  hint="Cochez tout ce qui s'applique."
+                >
                   <div className="grid sm:grid-cols-2 gap-2">
-                    {PROBLEMS.map((p) => (
-                      <button
-                        key={p}
-                        type="button"
-                        onClick={() => update("problem")(p)}
-                        className={
-                          "text-left px-3.5 py-2.5 rounded-lg border text-sm transition-all " +
-                          (data.problem === p
-                            ? "border-[#B8860B] bg-[#FBF7E9] text-[#0F172A] font-medium"
-                            : "border-[#E2E8F0] bg-white text-[#64748B] hover:border-[#CBD5E1] hover:bg-[#F8FAFC]")
-                        }
-                      >
-                        {p}
-                      </button>
-                    ))}
+                    {PROBLEMS.map((p) => {
+                      const checked = data.problems.includes(p);
+                      return (
+                        <button
+                          key={p}
+                          type="button"
+                          onClick={() => toggleProblem(p)}
+                          className={
+                            "group flex items-center gap-3 text-left px-3.5 py-3 rounded-lg border text-sm transition-all " +
+                            (checked
+                              ? "border-[#B8860B] bg-[#FBF7E9] text-[#0F172A] font-medium"
+                              : "border-[#E2E8F0] bg-white text-[#64748B] hover:border-[#CBD5E1] hover:bg-[#F8FAFC]")
+                          }
+                        >
+                          <span
+                            className={
+                              "flex-shrink-0 w-5 h-5 rounded-md border flex items-center justify-center transition-all " +
+                              (checked
+                                ? "border-[#B8860B] bg-[#B8860B]"
+                                : "border-[#CBD5E1] bg-white group-hover:border-[#94A3B8]")
+                            }
+                          >
+                            {checked && (
+                              <Check
+                                className="w-3.5 h-3.5 text-white"
+                                strokeWidth={3}
+                              />
+                            )}
+                          </span>
+                          <span>{p}</span>
+                        </button>
+                      );
+                    })}
                   </div>
+
+                  {/* Champ "Autre chose" conditionnel */}
+                  <AnimatePresence>
+                    {hasOther && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="overflow-hidden"
+                      >
+                        <input
+                          type="text"
+                          value={data.otherProblem}
+                          onChange={(e) =>
+                            setData((d) => ({
+                              ...d,
+                              otherProblem: e.target.value,
+                            }))
+                          }
+                          placeholder="Précisez votre problème…"
+                          className={inputClass + " mt-3"}
+                        />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </Field>
 
                 {/* 03 — Coordonnées */}
@@ -187,14 +251,18 @@ export function CaptureForm() {
                       type="email"
                       required
                       value={data.email}
-                      onChange={(e) => update("email")(e.target.value)}
+                      onChange={(e) =>
+                        setData((d) => ({ ...d, email: e.target.value }))
+                      }
                       placeholder="Email"
                       className={inputClass}
                     />
                     <input
                       type="tel"
                       value={data.whatsapp}
-                      onChange={(e) => update("whatsapp")(e.target.value)}
+                      onChange={(e) =>
+                        setData((d) => ({ ...d, whatsapp: e.target.value }))
+                      }
                       placeholder="WhatsApp (optionnel)"
                       className={inputClass}
                     />
@@ -261,7 +329,7 @@ export function CaptureForm() {
                 </p>
 
                 <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
-                  {/* ⚠️ Remplace cette URL par ton lien Calendly / Cal.com réel */}
+                  {/* ⚠️ Remplace l'URL par ton lien Calendly / Cal.com réel */}
                   <a
                     href="https://cal.com/patawala/diagnostic"
                     target="_blank"
@@ -281,7 +349,7 @@ export function CaptureForm() {
           </AnimatePresence>
         </motion.div>
 
-        {/* ---------- Bas de section — réassurance ---------- */}
+        {/* ---------- Bas de page ---------- */}
         <p className="mt-8 text-center text-sm text-[#94A3B8]">
           Une question ?{" "}
           <a

@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 
 interface Payload {
   activity: string;
-  problem: string;
+  problems: string[];
+  otherProblem?: string;
   email: string;
   whatsapp?: string;
 }
@@ -11,10 +12,16 @@ export async function POST(request: Request) {
   try {
     const body = (await request.json()) as Payload;
 
-    /* ---------- Validation serveur ---------- */
-    if (!body.activity || !body.problem || !body.email) {
+    /* ---------- Validation ---------- */
+    if (!body.activity || !body.email) {
       return NextResponse.json(
         { error: "Champs obligatoires manquants." },
+        { status: 400 }
+      );
+    }
+    if (!Array.isArray(body.problems) || body.problems.length === 0) {
+      return NextResponse.json(
+        { error: "Au moins un problème doit être coché." },
         { status: 400 }
       );
     }
@@ -25,16 +32,7 @@ export async function POST(request: Request) {
       );
     }
 
-    /* ---------- À FAIRE : brancher un vrai canal ---------- */
-    // Exemple 1 — Envoyer un email via Resend
-    // await resend.emails.send({ from: "contact@patawala.com", to: "vous@patawala.com", subject: "Nouveau diagnostic", text: ... });
-    //
-    // Exemple 2 — Enregistrer dans Notion / Airtable
-    // await notion.pages.create({ ... });
-    //
-    // Exemple 3 — Envoyer sur un webhook n8n / Make
-    // await fetch("https://hook.eu1.make.com/xxx", { method: "POST", body: JSON.stringify(body) });
-
+    /* ---------- À BRANCHER : Resend / Make / n8n / Notion ---------- */
     console.log("📥 Nouvelle demande de diagnostic :", body);
 
     return NextResponse.json({ ok: true });

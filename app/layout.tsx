@@ -1,8 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -10,32 +8,23 @@ const inter = Inter({
   display: "swap",
 });
 
-/* URL de production — à adapter une fois déployé */
 const SITE_URL = "https://patawala.com";
 
 export const metadata: Metadata = {
-  /* ---------- Base ---------- */
   metadataBase: new URL(SITE_URL),
-  title: {
-    default: "Patawala — Plateformes web sur-mesure",
-    template: "%s · Patawala",
-  },
+  title: "Patawala — Votre diagnostic gratuit",
   description:
-    "À partir de votre façon de travailler actuelle, nous construisons la plateforme dédiée qui gère votre acquisition, vos réservations et vos données clients.",
-
-  /* ---------- Mots-clés & auteurs ---------- */
+    "2 minutes pour décrire votre situation. Je reviens vers vous sous 24 h avec une première analyse.",
   keywords: [
-    "plateforme web sur-mesure",
-    "automatisation PME",
-    "portail client",
-    "système de réservation",
+    "diagnostic gratuit",
+    "logiciel métier sur-mesure",
+    "système d'acquisition",
     "gestion clients",
     "Patawala",
   ],
   authors: [{ name: "Patawala" }],
   creator: "Patawala",
 
-  /* ---------- Icônes ---------- */
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
@@ -56,38 +45,34 @@ export const metadata: Metadata = {
     shortcut: ["/favicon.ico"],
   },
 
-  /* ---------- Manifest PWA ---------- */
   manifest: "/manifest.json",
 
-  /* ---------- Open Graph (Facebook, LinkedIn, WhatsApp) ---------- */
   openGraph: {
     type: "website",
     locale: "fr_FR",
     url: SITE_URL,
     siteName: "Patawala",
-    title: "Patawala — Plateformes web sur-mesure",
+    title: "Patawala — Votre diagnostic gratuit",
     description:
-      "Votre futur portail client sur-mesure, livré dans quelques semaines. Acquisition, réservations et gestion clients dans un seul système.",
+      "2 minutes pour décrire votre situation. Je reviens vers vous sous 24 h avec une première analyse.",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Patawala — Plateformes web sur-mesure",
+        alt: "Patawala — Diagnostic gratuit",
       },
     ],
   },
 
-  /* ---------- Twitter / X ---------- */
   twitter: {
     card: "summary_large_image",
-    title: "Patawala — Plateformes web sur-mesure",
+    title: "Patawala — Votre diagnostic gratuit",
     description:
-      "Votre futur portail client sur-mesure, livré dans quelques semaines.",
+      "2 minutes pour décrire votre situation. Réponse sous 24 h.",
     images: ["/og-image.png"],
   },
 
-  /* ---------- Robots ---------- */
   robots: {
     index: true,
     follow: true,
@@ -100,7 +85,6 @@ export const metadata: Metadata = {
   },
 };
 
-/* ---------- Couleur de la barre navigateur mobile ---------- */
 export const viewport: Viewport = {
   themeColor: "#F8FAFC",
   width: "device-width",
@@ -115,12 +99,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr" className={inter.variable}>
-      <body className="min-h-screen font-sans flex flex-col bg-[#F8FAFC] text-[#0F172A] antialiased">
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+      <body className="min-h-screen font-sans bg-[#F8FAFC] text-[#0F172A] antialiased">
+        {children}
       </body>
     </html>
   );
 }
-

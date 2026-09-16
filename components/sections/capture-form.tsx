@@ -10,6 +10,15 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { WhatsAppIcon } from "@/components/ui/whatsapp-icon";
+
+/* ============================================================
+   CONFIG WHATSAPP
+   ============================================================ */
+const WHATSAPP_NUMBER = "22962278090";
+
+const buildWhatsAppUrl = (message: string) =>
+  `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 
 /* ============================================================
    TYPES & DONNÉES
@@ -148,12 +157,19 @@ export function CaptureForm() {
       setSuccess(true);
     } catch {
       setError(
-        "Une erreur est survenue. Réessayez ou écrivez-nous à contact@patawala.com."
+        "Une erreur est survenue. Réessayez ou écrivez-nous sur WhatsApp."
       );
     } finally {
       setLoading(false);
     }
   };
+
+  /* ---------- Message WhatsApp post-envoi ---------- */
+  const confirmationMessage = `Bonjour, je viens d'envoyer ma demande de diagnostic via le site.
+
+Métier : ${data.activity}
+Problèmes : ${data.problems.join(", ")}${hasOther && data.otherProblem ? ` — ${data.otherProblem}` : ""}
+Email : ${data.email}${data.whatsapp ? `\nWhatsApp : ${data.whatsapp}` : ""}`;
 
   return (
     <section className="relative">
@@ -226,7 +242,7 @@ export function CaptureForm() {
                   />
                 </Field>
 
-                {/* ---------- 02 — Problèmes (multi-select groupés) ---------- */}
+                {/* ---------- 02 — Problèmes ---------- */}
                 <Field
                   number="2"
                   label="Vos problèmes aujourd'hui"
@@ -235,7 +251,6 @@ export function CaptureForm() {
                   <div className="space-y-5">
                     {PROBLEM_GROUPS.map((group) => (
                       <div key={group.title}>
-                        {/* Titre de catégorie */}
                         <div className="flex items-center gap-3 mb-2.5">
                           <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#94A3B8] whitespace-nowrap">
                             {group.title}
@@ -243,7 +258,6 @@ export function CaptureForm() {
                           <span className="flex-1 h-px bg-[#E2E8F0]" />
                         </div>
 
-                        {/* Items */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                           {group.items.map((p) => {
                             const checked = data.problems.includes(p);
@@ -281,7 +295,6 @@ export function CaptureForm() {
                           })}
                         </div>
 
-                        {/* Champ "Autre chose" conditionnel */}
                         {group.title === "Autre" && hasOther && (
                           <motion.div
                             initial={{ opacity: 0, height: 0 }}
@@ -398,20 +411,20 @@ export function CaptureForm() {
                 </h3>
                 <p className="mt-3 text-[#64748B] leading-relaxed max-w-md mx-auto text-[15px]">
                   Merci. Je reviens vers vous sous 24 h avec une première
-                  analyse de votre situation. En attendant, vous pouvez
-                  réserver directement un créneau d'appel.
+                  analyse de votre situation. Pour accélérer, vous pouvez
+                  me contacter directement sur WhatsApp.
                 </p>
 
-                <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
-                  {/* ⚠️ Remplace l'URL par ton lien Calendly / Cal.com réel */}
+                <div className="mt-8">
+                  {/* Bouton principal — WhatsApp (message pré-rempli) */}
                   <a
-                    href="https://cal.com/patawala/diagnostic"
+                    href={buildWhatsAppUrl(confirmationMessage)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg bg-gradient-to-r from-[#B8860B] via-[#D4AF37] to-[#996515] text-slate-950 font-semibold shadow-lg shadow-amber-500/20 hover:shadow-amber-500/40 hover:scale-[1.02] transition-all duration-300"
+                    className="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-lg bg-[#25D366] text-white font-semibold shadow-[0_4px_14px_rgba(37,211,102,0.3)] hover:shadow-[0_6px_24px_rgba(37,211,102,0.5)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
                   >
-                    Réserver un créneau d'appel
-                    <ArrowRight className="w-4 h-4" />
+                    <WhatsAppIcon className="w-5 h-5" />
+                    Continuer sur WhatsApp
                   </a>
                 </div>
 
@@ -424,17 +437,33 @@ export function CaptureForm() {
         </motion.div>
 
         {/* ============================================================
-            PIED DE SECTION
+            PIED DE SECTION — Liens secondaires
            ============================================================ */}
-        <p className="mt-8 text-center text-sm text-[#94A3B8]">
-          Une question ?{" "}
-          <a
-            href="mailto:contact@patawala.com"
-            className="text-[#334155] underline underline-offset-4 decoration-[#E2E8F0] hover:decoration-[#0F172A] transition-colors"
-          >
-            contact@patawala.com
-          </a>
-        </p>
+        <div className="mt-8 space-y-3 text-center">
+          <p className="text-sm text-[#94A3B8]">
+            Une question ?{" "}
+            <a
+              href={buildWhatsAppUrl(
+                "Bonjour, j'ai une question avant de remplir le formulaire."
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-[#334155] font-medium underline underline-offset-4 decoration-[#E2E8F0] hover:decoration-[#0F172A] transition-colors"
+            >
+              <WhatsAppIcon className="w-3.5 h-3.5 text-[#25D366]" />
+              Écrivez-moi sur WhatsApp
+            </a>
+          </p>
+          <p className="text-sm text-[#94A3B8]">
+            Ou par email :{" "}
+            <a
+              href="mailto:contact@patawala.com"
+              className="text-[#334155] underline underline-offset-4 decoration-[#E2E8F0] hover:decoration-[#0F172A] transition-colors"
+            >
+              contact@patawala.com
+            </a>
+          </p>
+        </div>
       </div>
     </section>
   );

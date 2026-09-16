@@ -1,11 +1,11 @@
 import { HeroSection } from "@/components/sections/hero-section";
-import { ProcessSection } from "@/components/sections/process-section";
+import { CaptureForm } from "@/components/sections/capture-form";
 
 export default function HomePage() {
   return (
-    <main className="relative">
+    <>
       <HeroSection />
-      <ProcessSection />
-    </main>
+      <CaptureForm />
+    </>
   );
 }

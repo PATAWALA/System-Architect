@@ -3,11 +3,21 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { RotatingWords } from "@/components/ui/rotating-words";
+
+const ROTATING_WORDS = [
+  "portail client",
+  "système d'acquisition",
+  "CRM sur-mesure",
+  "outil de gestion",
+  "machine à écrire",
+  "logiciel métier",
+];
 
 const REASSURANCES = [
   "Maquette gratuite validée avec vous",
   "Hébergé en Suisse · Infomaniak",
-  "Votre logiciel vous appartient",
+  "L'application vous appartient",
 ];
 
 export function HeroSection() {
@@ -25,7 +35,7 @@ export function HeroSection() {
         className="absolute inset-x-0 top-0 h-[600px] bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,rgba(184,134,11,0.08),transparent_70%)] pointer-events-none"
       />
 
-      <div className="relative mx-auto max-w-4xl px-6 pt-20 pb-24 lg:pt-28 lg:pb-32">
+      <div className="relative mx-auto max-w-4xl px-6 pt-24 pb-20 lg:pt-32 lg:pb-24">
         <div className="flex flex-col items-center text-center">
           {/* ---------- Badge ---------- */}
           <motion.div
@@ -35,10 +45,10 @@ export function HeroSection() {
             className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#E2E8F0] text-[11px] font-medium tracking-[0.08em] uppercase text-[#64748B]"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-[#B8860B]" />
-            Systèmes web pour entrepreneurs
+            Systèmes web sur-mesure
           </motion.div>
 
-          {/* ---------- H1 en 3 lignes ---------- */}
+          {/* ---------- H1 avec mot rotatif ---------- */}
           <motion.h1
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -47,43 +57,18 @@ export function HeroSection() {
               delay: 0.05,
               ease: [0.22, 1, 0.36, 1] as const,
             }}
-            className="mt-8 text-[36px] sm:text-5xl lg:text-[64px] font-semibold tracking-tight text-[#0F172A] leading-[1.1]"
+            className="mt-10 text-[34px] sm:text-5xl lg:text-[60px] font-semibold tracking-tight text-[#0F172A] leading-[1.15]"
           >
-            Votre système d'
-            <span className="text-[#334155]">acquisition.</span>
+            Repartez avec votre
             <br />
-            Votre système de{" "}
-            <span className="text-[#334155]">gestion.</span>
+            <RotatingWords
+              words={ROTATING_WORDS}
+              displayDuration={2200}
+              fadeDuration={0.45}
+            />
             <br />
-            <span className="text-[#B8860B]">Dans un seul logiciel.</span>
+            <span className="text-[#B8860B]">En 7 jours.</span>
           </motion.h1>
-
-          {/* ---------- Sous-titre ---------- */}
-          <motion.p
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 0.6,
-              delay: 0.15,
-              ease: [0.22, 1, 0.36, 1] as const,
-            }}
-            className="mt-7 text-lg text-[#64748B] leading-relaxed max-w-2xl"
-          >
-            Je conçois le logiciel sur-mesure qui{" "}
-            <span className="text-[#334155] font-medium">
-              capte vos clients
-            </span>
-            ,{" "}
-            <span className="text-[#334155] font-medium">
-              structure votre activité
-            </span>{" "}
-            et{" "}
-            <span className="text-[#334155] font-medium">
-              centralise vos données
-            </span>
-            . Maquette gratuite validée avec vous avant le moindre
-            développement.
-          </motion.p>
 
           {/* ---------- CTA unique ---------- */}
           <motion.div
@@ -91,10 +76,10 @@ export function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{
               duration: 0.6,
-              delay: 0.25,
+              delay: 0.2,
               ease: [0.22, 1, 0.36, 1] as const,
             }}
-            className="mt-10"
+            className="mt-12"
           >
             <Button size="lg" variant="primary" onClick={scrollToForm}>
               Réserver mon diagnostic gratuit
@@ -109,10 +94,10 @@ export function HeroSection() {
             variants={{
               hidden: {},
               visible: {
-                transition: { staggerChildren: 0.1, delayChildren: 0.45 },
+                transition: { staggerChildren: 0.1, delayChildren: 0.4 },
               },
             }}
-            className="mt-12 pt-8 border-t border-[#E2E8F0] flex flex-wrap justify-center gap-x-8 gap-y-3 w-full max-w-3xl"
+            className="mt-14 pt-8 border-t border-[#E2E8F0] flex flex-wrap justify-center gap-x-8 gap-y-3 w-full max-w-3xl"
           >
             {REASSURANCES.map((r) => (
               <motion.li
